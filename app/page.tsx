@@ -411,6 +411,14 @@ export default function Home() {
 
       {/* Page 2 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
+        {/* ACN Logo for screenshot */}
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+          <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
+            <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
+            <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
+          </svg>
+        </div>
+
         {/* <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-orange-50 to-transparent opacity-50 z-10"></div> */}
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
           <div className="bg-white/20 backdrop-blur-xl rounded-3xl px-6 py-4">
@@ -433,6 +441,15 @@ export default function Home() {
 
       {/* Page 3 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
+        {/* ACN Logo for screenshot */}
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+          <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
+            <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
+            <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
+          </svg>
+        </div>
+
+
         {/* <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-green-50 to-transparent opacity-50 z-10"></div> */}
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
           <div className="bg-white/20 backdrop-blur-xl rounded-3xl px-6 py-4">
@@ -464,6 +481,15 @@ export default function Home() {
 
       {/* Page 4 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
+        {/* ACN Logo for screenshot */}
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+          <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
+            <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
+            <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
+          </svg>
+        </div>
+
+
         <div className="absolute top-40 left-0 w-full px-6 z-10 flex flex-col items-start">
           <p className="font-n text-neutral-500 text-lg font-medium w-full text-left">You were most active in</p>
           <h3 className="font-me text-orange-500 text-4xl mb-12 w-full text-left">{activeMonth}</h3>
@@ -505,6 +531,15 @@ export default function Home() {
 
       {/* Page 5 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
+        {/* ACN Logo for screenshot */}
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+          <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
+            <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
+            <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
+          </svg>
+        </div>
+
+
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
           <div className="bg-white/20 backdrop-blur-xl rounded-3xl px-6 py-4">
             <p className="font-me font-medium text-green-900 text-[45px] mb-2">{validZone?.top_zone || 'North'}</p>
@@ -523,6 +558,15 @@ export default function Home() {
 
       {/* Page 6 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
+        {/* ACN Logo for screenshot */}
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+          <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
+            <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
+            <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
+          </svg>
+        </div>
+
+
         <div className="absolute top-40 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center text-center w-full px-4">
           <div className="bg-white/20 backdrop-blur-xl rounded-3xl px-6 py-4">
             <p className="font-me font-medium text-orange-500 text-[45px] mb-2">{weeklyStats?.maxDay || 'Wednesday'}</p>
@@ -559,6 +603,15 @@ export default function Home() {
 
       {/* Page 7 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
+        {/* ACN Logo for screenshot */}
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+          <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
+            <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
+            <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
+          </svg>
+        </div>
+
+
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
           <div className="bg-white/20 backdrop-blur-xl rounded-3xl px-6 py-4">
             <p className="font-me font-medium text-green-900 text-[38px] break-words w-full mb-2">{micromarketStats?.names}</p>
@@ -577,6 +630,15 @@ export default function Home() {
 
       {/* Page 8 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
+        {/* ACN Logo for screenshot */}
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+          <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
+            <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
+            <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
+          </svg>
+        </div>
+
+
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
           <div className="bg-white/20 backdrop-blur-xl rounded-3xl px-6 py-4">
             <p className="font-me font-medium text-orange-500 text-[100px] leading-none mb-2">
@@ -600,6 +662,15 @@ export default function Home() {
 
       {/* Page 9 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
+        {/* ACN Logo for screenshot */}
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+          <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
+            <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
+            <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
+          </svg>
+        </div>
+
+
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
           <div className="bg-white/20 backdrop-blur-xl rounded-3xl px-6 py-4">
             <p className="font-me font-medium text-green-900 text-[100px] leading-none mb-2">{agentStats?.dealTypePct || 0}%</p>
@@ -618,6 +689,15 @@ export default function Home() {
 
       {/* Page 10 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
+        {/* ACN Logo for screenshot */}
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+          <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
+            <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
+            <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
+          </svg>
+        </div>
+
+
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
           <div className="bg-white/20 backdrop-blur-xl rounded-3xl px-6 py-4">
             <p className="font-me font-medium text-orange-500 text-[80px] leading-tight mb-2">{agentStats?.formattedPrice}</p>
@@ -636,6 +716,15 @@ export default function Home() {
 
       {/* Page 11 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
+        {/* ACN Logo for screenshot */}
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+          <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
+            <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
+            <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
+          </svg>
+        </div>
+
+
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
           <div className="bg-white/20 backdrop-blur-xl rounded-3xl px-6 py-4">
             <p className="font-me font-medium text-green-900 text-[60px] break-words w-full">{assetStats.name}</p>
@@ -654,6 +743,15 @@ export default function Home() {
 
       {/* Page 12 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
+        {/* ACN Logo for screenshot */}
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+          <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
+            <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
+            <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
+          </svg>
+        </div>
+
+
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
           <div className="bg-white/20 backdrop-blur-xl rounded-3xl px-6 py-4">
             <p className="font-me font-medium text-orange-500 text-[50px] break-words w-full">
@@ -707,6 +805,7 @@ export default function Home() {
 
   );
 }
+
 
 
 
