@@ -96,9 +96,24 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // TRACK SCROLL DEPTH
+  // TRACK PAGE VIEW AND URL
   useEffect(() => {
+    if (data) {
+      posthog.capture('page_view', {
+        url: window.location.href,
+        mobile: data.mobile,
+        agent_name: data.agent_name
+      });
+    }
+  }, [data]);
+
+  // TRACK SCROLL DEPTH AND COMPLETION
+  useEffect(() => {
+    if (!data) return;
+
     let maxScroll = 0;
+    let hasReachedEnd = false;
+
     const handleScroll = () => {
       const scrollTop = window.scrollY || document.documentElement.scrollTop;
       const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -107,16 +122,42 @@ export default function Home() {
       if (scrolled > maxScroll) {
         maxScroll = scrolled;
         // Check milestones
-        if (maxScroll > 25 && maxScroll < 26) posthog.capture('scroll_depth', { percentage: 25 });
-        if (maxScroll > 50 && maxScroll < 51) posthog.capture('scroll_depth', { percentage: 50 });
-        if (maxScroll > 75 && maxScroll < 76) posthog.capture('scroll_depth', { percentage: 75 });
-        if (maxScroll > 99) posthog.capture('scroll_depth', { percentage: 100 });
+        if (maxScroll > 25 && maxScroll < 26) {
+          posthog.capture('scroll_depth', {
+            percentage: 25,
+            mobile: data.mobile,
+            agent_name: data.agent_name
+          });
+        }
+        if (maxScroll > 50 && maxScroll < 51) {
+          posthog.capture('scroll_depth', {
+            percentage: 50,
+            mobile: data.mobile,
+            agent_name: data.agent_name
+          });
+        }
+        if (maxScroll > 75 && maxScroll < 76) {
+          posthog.capture('scroll_depth', {
+            percentage: 75,
+            mobile: data.mobile,
+            agent_name: data.agent_name
+          });
+        }
+        if (maxScroll > 99 && !hasReachedEnd) {
+          hasReachedEnd = true;
+          posthog.capture('rewind_completed', {
+            percentage: 100,
+            mobile: data.mobile,
+            agent_name: data.agent_name,
+            url: window.location.href
+          });
+        }
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [data]);
 
   const fetchData = (mobile: string) => {
     setLoading(true);
