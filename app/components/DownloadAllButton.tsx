@@ -22,6 +22,12 @@ export default function DownloadAllButton() {
             for (let i = 0; i < totalPages; i++) { // Loop until totalPages (excluding last)
                 const section = sections[i] as HTMLElement;
 
+                // Show logo if not the first page
+                const logo = section.querySelector('#capture-logo') as HTMLElement;
+                if (logo && i !== 0) {
+                    logo.style.display = 'flex';
+                }
+
                 await new Promise(resolve => setTimeout(resolve, 200));
 
                 const dataUrl = await htmlToImage.toPng(section, {
@@ -33,11 +39,15 @@ export default function DownloadAllButton() {
                             if (node.classList.contains('glass-btn-standalone')) return false;
                             if (node.id === 'capture-overlay') return false;
                             if (node.id === 'download-all-btn') return false;
-                            if (node.id === 'capture-logo') return false;
                         }
                         return true;
                     }
                 });
+
+                // Hide logo after capture
+                if (logo) {
+                    logo.style.display = 'none';
+                }
 
                 // Convert data URL to blob and add to ZIP
                 const base64Data = dataUrl.split(',')[1];
