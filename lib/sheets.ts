@@ -27,6 +27,7 @@ export interface AgentData {
   rental_count?: number;
   asset_types?: string;
   asset_types_pct?: number;
+  all_asset_types?: Array<{ assetType: string; count: number }>;
   top_configuration?: string;
   config_pct?: number;
   all_configurations?: Array<{ bedrooms: string; count: number }>;
@@ -137,19 +138,26 @@ function parseTopMicromarkets(micromarketsStr: string) {
 
 function parseAssetTypes(assetTypesStr: string) {
   try {
-    if (!assetTypesStr) return { topAsset: 'Apartment', topAssetPct: 0 };
+    if (!assetTypesStr) return { topAsset: 'Apartment', topAssetPct: 0, allAssetTypes: [] };
     
-    const assets = JSON.parse(assetTypesStr);
+    let cleanStr = assetTypesStr.trim();
+    // Handle potential double-encoding from CSV/Sheets
+    if (cleanStr.startsWith('"') && cleanStr.endsWith('"')) {
+        cleanStr = cleanStr.slice(1, -1).replace(/\\"/g, '"');
+    }
+    
+    const assets = JSON.parse(cleanStr);
     if (!assets || assets.length === 0) {
-      return { topAsset: 'Apartment', topAssetPct: 0 };
+      return { topAsset: 'Apartment', topAssetPct: 0, allAssetTypes: [] };
     }
     
     let maxAsset = assets[0];
     let totalCount = 0;
     
     assets.forEach((a: any) => {
-      totalCount += a.count || 0;
-      if (a.count > maxAsset.count) {
+      const count = parseInt(a.count) || 0;
+      totalCount += count;
+      if (count > (parseInt(maxAsset.count) || 0)) {
         maxAsset = a;
       }
     });
@@ -157,9 +165,9 @@ function parseAssetTypes(assetTypesStr: string) {
     const pct = totalCount > 0 ? Math.round((maxAsset.count / totalCount) * 100) : 0;
     const assetName = maxAsset.assetType.charAt(0).toUpperCase() + maxAsset.assetType.slice(1);
     
-    return { topAsset: assetName, topAssetPct: pct };
+    return { topAsset: assetName, topAssetPct: pct, allAssetTypes: assets };
   } catch (e) {
-    return { topAsset: 'Apartment', topAssetPct: 0 };
+    return { topAsset: 'Apartment', topAssetPct: 0, allAssetTypes: [] };
   }
 }
 
@@ -247,7 +255,7 @@ export async function getAgentData(mobile: string): Promise<AgentData> {
     // Fetch both sheets
     const response = await sheets.spreadsheets.values.batchGet({
       spreadsheetId: SPREADSHEET_ID,
-      ranges: ['Activity!A:E', 'Data!A:U'],
+      ranges: ['Activity!A:E', 'Data!A:Z'],
     });
 
     const activityData = response.data.valueRanges?.[0]?.values || [];
@@ -281,7 +289,7 @@ export async function getAgentData(mobile: string): Promise<AgentData> {
       const rowMobile = (agentData[i][1] || '').toString().replace(/[\+\s\-]/g, '');
       if (searchNumbers.some(num => rowMobile === num || rowMobile.endsWith(num) || num.endsWith(rowMobile.slice(-10)))) {
         agentRow = agentData[i];
-        break;
+        // Don't break, take the last occurrence (latest data)
       }
     }
 
@@ -338,6 +346,7 @@ export async function getAgentData(mobile: string): Promise<AgentData> {
       const assetTypesData = parseAssetTypes(agentRow[9]);
       result.asset_types = assetTypesData.topAsset;
       result.asset_types_pct = assetTypesData.topAssetPct;
+      result.all_asset_types = assetTypesData.allAssetTypes;
       
       const configData = parseConfigurations(agentRow[10]);
       result.top_configuration = configData.topConfig;
@@ -351,10 +360,11 @@ export async function getAgentData(mobile: string): Promise<AgentData> {
       result.rental_min_rent = parseInt(agentRow[15]) || 0;
       result.rental_max_rent = parseInt(agentRow[16]) || 0;
       
-      result.bestie_cp_id = agentRow[17] || '';
-      result.bestie_name = agentRow[18] || '-';
-      result.bestie_mobile = agentRow[19] || '';
-      result.bestie_count = parseInt(agentRow[20]) || 0;
+      result.bestie_cp_id = agentRow[18] || '';
+      result.bestie_name = agentRow[19] || '-';
+      result.bestie_mobile = agentRow[20] || '';
+      const bestieCountStr = (agentRow[21] || '').toString();
+      result.bestie_count = parseInt(bestieCountStr.replace(/\D/g, '')) || 0;
       
       result.total_properties = result.resale_count + result.rental_count;
       result.total_enquiries = result.enquiries_sent + result.enquiries_received;

@@ -55,7 +55,7 @@ function LoginScreen({ onLogin, error }: { onLogin: (mobile: string) => void, er
           <p className="text-gray-500 font-medium">Enter your mobile number to start</p>
         </div>
 
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-6">
           <input
             type="tel"
             placeholder="9999999999"
@@ -84,6 +84,14 @@ function LoginScreen({ onLogin, error }: { onLogin: (mobile: string) => void, er
 
 export default function Home() {
   const [data, setData] = useState<AgentData | null>(null);
+
+  const activeMonth = useMemo(() => {
+    if (!data?.activity_data) return 'January';
+    const sums = data.activity_data.map(m => (Array.isArray(m) ? m.reduce((a, b) => a + (b || 0), 0) : 0));
+    const max = Math.max(...sums);
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    return months[sums.indexOf(max)] || 'January';
+  }, [data]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -161,14 +169,26 @@ export default function Home() {
 
   const validZone = useMemo(() => {
     if (!data) return null;
-    if (data.top_zone && data.top_zone !== 'Unknown') return data;
+
     if (data.all_zones && data.all_zones.length > 0) {
       const total = data.all_zones.reduce((sum, z) => sum + (z.count || 0), 0);
       const sorted = [...data.all_zones].sort((a, b) => (b.count || 0) - (a.count || 0));
-      const best = sorted.find(z => z.zone !== 'Unknown');
-      if (best) return { ...data, top_zone: best.zone.replace(' Bangalore', '').trim(), top_zone_pct: total > 0 ? Math.round((best.count / total) * 100) : 0 };
+
+      const best = sorted.find(z => {
+        const name = (z.zone || '').toLowerCase();
+        return (name.includes('north') || name.includes('south') || name.includes('east') || name.includes('west') || name.includes('central'))
+          && !name.includes('unknown') && !name.includes('specif');
+      });
+
+      if (best) {
+        return {
+          ...data,
+          top_zone: best.zone.trim(),
+          top_zone_pct: total > 0 ? Math.round((best.count / total) * 100) : 0
+        };
+      }
     }
-    return { ...data, top_zone: 'North', top_zone_pct: data.top_zone_pct || 0 };
+    return { ...data, top_zone: 'North', top_zone_pct: data?.top_zone_pct || 0 };
   }, [data]);
 
   const weeklyStats = useMemo(() => {
@@ -197,14 +217,96 @@ export default function Home() {
     const received = data.enquiries_received || 0;
     const totalEnq = sent + received;
     const sentPct = totalEnq > 0 ? Math.round((sent / totalEnq) * 100) : 0;
-    const styleLabel = sentPct >= 50 ? 'Buyer Agent' : 'Seller Agent';
+    const receivedPct = totalEnq > 0 ? Math.round((received / totalEnq) * 100) : 0;
+
+    const isBuyer = sentPct >= 50;
+    const displayPct = isBuyer ? sentPct : receivedPct;
+    const displayAction = isBuyer ? 'enquiries sent' : 'enquiries received';
+    const styleLabel = isBuyer ? "You're more of a buyer agent" : "You're more of a seller agent";
 
     const resale = data.resale_count || 0;
     const rental = data.rental_count || 0;
     const totalDeals = resale + rental;
     const resalePct = totalDeals > 0 ? Math.round((resale / totalDeals) * 100) : 0;
 
-    return { sent, received, sentPct, styleLabel, resale, rental, resalePct };
+    const isResale = resalePct >= 50;
+    const dealTypePct = isResale ? resalePct : (totalDeals > 0 ? Math.round((rental / totalDeals) * 100) : 0);
+    const dealTypeLabel = isResale ? 'resale' : 'rentals';
+
+    // Price logic
+    const resalePrice = data.resale_avg_price || 0;
+    const rentalPrice = data.rental_avg_rent || 0;
+
+    // Prioritize Resale Price for Market Pricing if available
+    let targetPrice = resalePrice;
+    let targetType = 'Resale';
+
+    if (targetPrice === 0 && rentalPrice > 0) {
+      targetPrice = rentalPrice;
+      targetType = 'Rental';
+    }
+
+    // Heuristic: If price is > 50L, it's likely a Resale value mislabeled or mis-columned as Rental
+    if (targetPrice > 5000000) {
+      targetType = 'Resale';
+    }
+
+    const formatValue = (val: number) => {
+      if (val >= 10000000) return `₹${(val / 10000000).toFixed(2).replace('.00', '').replace('.0', '')} Cr`;
+      if (val >= 100000) return `₹${(val / 100000).toFixed(2).replace('.00', '').replace('.0', '')} L`;
+      if (val >= 1000) return `₹${(val / 1000).toFixed(1).replace('.0', '')} K`;
+      return `₹${val.toLocaleString('en-IN')}`;
+    };
+
+    let formattedPrice = '₹0';
+    if (targetPrice > 0) {
+      formattedPrice = formatValue(targetPrice);
+    }
+    const priceSubtitle = `Your average ${targetType.toLowerCase()} property value`;
+
+    return { sent, received, sentPct, displayPct, displayAction, styleLabel, resale, rental, resalePct, dealTypePct, dealTypeLabel, formattedPrice, priceSubtitle };
+  }, [data]);
+
+  const assetStats = useMemo(() => {
+    if (!data?.all_asset_types || data.all_asset_types.length === 0) {
+      return { name: data?.asset_types || 'Apartment', pct: data?.asset_types_pct || 0 };
+    }
+
+    let total = 0;
+    let maxCount = 0;
+    let maxName = '';
+
+    data.all_asset_types.forEach(a => {
+      const c = Number(a.count || 0);
+      total += c;
+      if (c > maxCount) {
+        maxCount = c;
+        maxName = a.assetType;
+      }
+    });
+
+    const pct = total > 0 ? Math.round((maxCount / total) * 100) : 0;
+    const name = maxName ? (maxName.charAt(0).toUpperCase() + maxName.slice(1)) : (data?.asset_types || 'Apartment');
+
+    return { name, pct };
+  }, [data]);
+
+  const micromarketStats = useMemo(() => {
+    if (!data?.all_micromarkets || data.all_micromarkets.length === 0) {
+      return {
+        names: data?.top_micromarket || 'Hebbal',
+        pct: 0
+      };
+    }
+    const sorted = [...data.all_micromarkets].filter(m => (m.count || 0) > 0).sort((a, b) => (b.count || 0) - (a.count || 0));
+    const top3 = sorted.slice(0, 3);
+    const names = top3.map(m => m.micromarket).join(', ');
+
+    const total = data.all_micromarkets.reduce((sum, m) => sum + (m.count || 0), 0);
+    const top3Sum = top3.reduce((sum, m) => sum + (m.count || 0), 0);
+    const pct = total > 0 ? Math.round((top3Sum / total) * 100) : 0;
+
+    return { names, pct };
   }, [data]);
 
   // --- RENDER LOGIC ---
@@ -247,12 +349,17 @@ export default function Home() {
 
         <div className="absolute top-68 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center gap-3 w-full px-4">
           {/* <p className="font-n text-gray-400 text-lg font-medium tracking-wide">Hey</p> */}
-          <h1 className="font-me text-green-900 text-4xl">{data?.agent_name?.toUpperCase() || 'AGENT'}</h1> {/*name of the person*/}
+          <h1 className="font-me text-green-900 text-[45px]">{data?.agent_name?.toUpperCase() || 'AGENT'}</h1>
           <p className="font-m text-neutral-400 text-lg font-medium">
             Ready for your rewind? <br />
             Let's replay your year.
           </p>
-
+        </div>
+        {/* Scroll Indicator */}
+        <div className="z-10 animate-bounce pointer-events-none mb-24 text-white">
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
 
         <ButtonBar projectName="Prestige Shantiniketan" />
@@ -262,10 +369,12 @@ export default function Home() {
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-orange-50 to-transparent opacity-50 z-10"></div> */}
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
-          <p className="font-n text-gray-400 text-lg font-medium tracking-wide">You were active for</p>
-          <p className="font-me font-medium text-orange-500 text-[100px]">{data?.days_active || 0}</p>
-          <p className="font-n text-gray-400 text-lg font-medium leading-tight">
-            thats {Math.round(((data?.days_active || 0) / 365) * 100)}% for the year
+          <p className="font-me font-medium text-orange-500 text-[120px] leading-none mb-2">{data?.days_active || 0}</p>
+          <p className="font-n text-gray-400 text-lg font-medium tracking-wide">
+            days active on the platform
+          </p>
+          <p className="font-n text-gray-400 text-lg font-medium">
+            That's {Math.round(((data?.days_active || 0) / 365) * 100)}% of the year
           </p>
         </div>
         <img
@@ -273,44 +382,67 @@ export default function Home() {
           alt="Velincia"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
-        <ButtonBar projectName="Velincia" />
+        <ButtonBar projectName="Brigade Valencia" />
       </section>
 
       {/* Page 3 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-green-50 to-transparent opacity-50 z-10"></div> */}
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
-          <p className="font-n text-gray-400 text-lg font-medium tracking-wide">Your longest streak is of</p>
-          <p className="font-me font-medium text-green-900 text-[100px]">{data?.longest_streak || 0}</p>
-          <p className="font-n text-gray-400 text-lg font-medium leading-tight">
-            days from {data?.streak_start_date || '-'} to {data?.streak_end_date || '-'}
-          </p>
+          <p className="font-me font-medium text-green-900 text-[120px] leading-none mb-2">{data?.longest_streak || 0}</p>
+          {(data?.longest_streak || 0) > 1 ? (
+            <>
+              <p className="font-n text-gray-400 text-lg font-medium tracking-wide">days in a row. You came</p>
+              <p className="font-n text-gray-400 text-lg font-medium leading-tight">
+                every day from {data?.streak_start_date || '-'} to {data?.streak_end_date || '-'}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="font-n text-gray-400 text-lg font-medium tracking-wide">day,</p>
+              <p className="font-n text-gray-400 text-lg font-medium leading-tight">
+                Your longest streak was on {data?.streak_end_date || '-'}
+              </p>
+            </>
+          )}
         </div>
         <img
           src="/lake%20tarrece.jpg"
           alt="Lake Terrace"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
-        <ButtonBar projectName="Lake Terrace" />
+        <ButtonBar projectName="Embassy Lake Terraces" />
       </section>
 
       {/* Page 4 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         <div className="absolute top-40 left-0 w-full px-6 z-10 flex flex-col items-start">
-          <h3 className="font-n text-gray-400 text-lg font-medium mb-8 w-full text-left">Activity Map</h3>
-          <div className="flex flex-col gap-4 w-full">
-            {(data?.activity_data || Array.from({ length: 12 }).map(() => Array.from({ length: 31 }))).map((month, m) => (
-              <div key={m} className={`flex gap-2 ${m < 6 ? 'w-full' : 'w-1/2'}`}>
-                <span className="text-[8px] font-medium text-gray-400 uppercase tracking-widest text-right shrink-0">{["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][m]}</span>
-                <div className="flex flex-wrap gap-1">
-                  {(month as number[]).slice(0, [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m]).map((count, d) => (
-                    <div
-                      key={d}
-                      className={`w-2 h-2 rounded-full ${count > 0 ? 'bg-orange-500' : 'bg-neutral-200'}`}
-                      title={`Day: ${d + 1}, Count: ${count}`}
-                    />
-                  ))}
-                </div>
+          <p className="font-n text-neutral-400 text-lg font-medium w-full text-left">You were most active in</p>
+          <h3 className="font-me text-orange-500 text-4xl mb-12 w-full text-left">{activeMonth}</h3>
+
+          <div className="flex flex-col w-full">
+            {[[0, 1, 2], [3, 4, 5], [6, 7], [8, 9], [10], [11]].map((row, i) => (
+              <div key={i} className="flex justify-start w-full mb-3">
+                {row.map(m => {
+                  const monthData = (data?.activity_data || Array.from({ length: 12 }).map(() => Array.from({ length: 31 })))[m];
+                  const monthName = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][m];
+                  const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m];
+
+                  return (
+                    <div key={m} className="flex flex-col px-1 w-1/3">
+                      <span className="text-[10px] font-medium text-neutral-400 uppercase tracking-widest mb-1">{monthName}</span>
+                      <div className="flex flex-wrap gap-0.5">
+                        {(monthData as number[]).slice(0, daysInMonth).map((count, d) => (
+                          <div
+                            key={d}
+                            className={`w-2 h-2 rounded-full ${count > 0 ? 'bg-orange-500' : 'bg-neutral-300'}`}
+                            title={`Day: ${d + 1}, Count: ${count}`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             ))}
           </div>
@@ -320,16 +452,15 @@ export default function Home() {
           alt="Exocita"
           className="w-full absolute pl-32 bottom-0 object-cover object-bottom pointer-events-none select-none translate-x-0"
         />
-        <ButtonBar projectName="Exocita" />
+        <ButtonBar projectName="Brigade Exotica" />
       </section>
 
       {/* Page 5 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
-          <p className="font-n text-neutral-400 text-lg font-medium tracking-wide drop-shadow-md">Your most active zone is</p>
-          <p className="font-me font-medium text-green-900 text-[80px] leading-tight drop-shadow-lg">{validZone?.top_zone || 'North'}</p>
-          <p className="font-n text-neutral-400 text-lg font-medium leading-tight drop-shadow-md">
-            Bangalore, {validZone?.top_zone_pct || 0}% of deal is here
+          <p className="font-me font-medium text-green-900 text-[45px] mb-2">{validZone?.top_zone || 'North'}</p>
+          <p className="font-n text-neutral-400 text-lg font-medium">
+            {validZone?.top_zone_pct || 0}% of your activity in this zone
           </p>
         </div>
         <img
@@ -337,14 +468,14 @@ export default function Home() {
           alt="Tata"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
-        <ButtonBar projectName="Tata" />
+        <ButtonBar projectName="Tata Promont" />
       </section>
 
       {/* Page 6 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         <div className="absolute top-40 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center text-center w-full px-4">
-          <p className="font-n text-neutral-400 text-lg font-medium tracking-wide mb-2 drop-shadow-md">You're mostly active on</p>
-          <p className="font-me font-medium text-orange-500 text-[50px] leading-tight drop-shadow-lg">{weeklyStats?.maxDay || 'Wednesday'}</p>
+          <p className="font-me font-medium text-orange-500 text-[45px] mb-2">{weeklyStats?.maxDay || 'Wednesday'}</p>
+          <p className="font-n text-neutral-400 text-lg font-medium tracking-wide">Your most active day of the week</p>
         </div>
 
         {/* Dynamic Bars rising behind the image */}
@@ -371,16 +502,15 @@ export default function Home() {
           alt="Crystal Medows"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none z-10"
         />
-        <ButtonBar projectName="Crystal Medows" />
+        <ButtonBar projectName="Sobha Crystal Meadows" />
       </section>
 
       {/* Page 7 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
-          <p className="font-n text-neutral-400 text-lg font-medium tracking-wide drop-shadow-md">Your top micromarket is</p>
-          <p className="font-me font-medium text-green-900 text-[60px] leading-tight drop-shadow-lg break-words w-full">{data?.top_micromarket || 'Hebbal'}</p>
-          <p className="font-n text-neutral-400 text-lg font-medium leading-tight drop-shadow-md">
-            with {data?.micromarket_count || 0} properties
+          <p className="font-me font-medium text-green-900 text-[38px] break-words w-full mb-2">{micromarketStats?.names}</p>
+          <p className="font-n text-neutral-400 text-lg font-medium">
+            Your most active {micromarketStats?.names.includes(',') ? 'micromarkets' : 'micromarket'} with {micromarketStats?.pct}% of all activity
           </p>
         </div>
         <img
@@ -394,88 +524,78 @@ export default function Home() {
       {/* Page 8 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
-          <p className="font-n text-neutral-400 text-lg font-medium tracking-wide drop-shadow-md">Your Deal Style</p>
-          <p className="font-me font-medium text-orange-500 text-[60px] leading-tight drop-shadow-lg">{agentStats?.sentPct || 0}% SENT</p>
-          <p className="font-n text-neutral-400 text-lg font-medium leading-tight drop-shadow-md mt-2">
-            {agentStats?.sent || 0} Sent | {agentStats?.received || 0} Received
+          <p className="font-me font-medium text-orange-500 text-[100px] leading-none mb-2">
+            {agentStats?.displayPct || 0}%
           </p>
-          <p className="font-me text-white text-3xl mt-6 drop-shadow-lg">{agentStats?.styleLabel || 'Agent'}</p>
+          <p className="font-n text-neutral-400 text-lg font-medium">
+            {agentStats?.displayAction}
+          </p>
+          <p className="font-n text-neutral-400 text-lg font-medium">
+            {agentStats?.styleLabel}
+          </p>
         </div>
         <img
           src="/royalpav.jpg"
           alt="Royal Pavilion"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
-        <ButtonBar projectName="Royal Pavilion" />
+        <ButtonBar projectName="Sobha Royal Pavilion" />
       </section>
 
       {/* Page 9 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
-          <p className="font-n text-neutral-400 text-lg font-medium tracking-wide drop-shadow-md">Deal Type Mix</p>
-          <p className="font-me font-medium text-green-900 text-[60px] leading-tight drop-shadow-lg">{agentStats?.resalePct || 0}% RESALE</p>
-          <p className="font-n text-neutral-400 text-lg font-medium leading-tight drop-shadow-md mt-2">
-            {agentStats?.resale || 0} Resale | {agentStats?.rental || 0} Rental
+          <p className="font-me font-medium text-green-900 text-[100px] leading-none mb-2">{agentStats?.dealTypePct || 0}%</p>
+          <p className="font-n text-neutral-400 text-lg font-medium">
+            of your work was in {agentStats?.dealTypeLabel}
           </p>
         </div>
         <img
           src="/adarsh.jpg"
-          alt="Adarsh"
+          alt="Adarsh Palm Retreat"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
-        <ButtonBar projectName="Adarsh" />
+        <ButtonBar projectName="Adarsh Palm Retreat" />
       </section>
 
       {/* Page 10 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
-          <p className="font-n text-neutral-400 text-lg font-medium tracking-wide drop-shadow-md">Market Pricing</p>
-
-          <div className="mt-8 flex flex-col gap-8 w-full">
-            <div>
-              <p className="font-me font-medium text-orange-500 text-[50px] leading-tight drop-shadow-lg">{formatCurrency(data?.resale_avg_price || 0)}</p>
-              <p className="font-n text-white text-lg font-medium leading-tight drop-shadow-md">Avg. Resale Price</p>
-            </div>
-
-            <div>
-              <p className="font-me font-medium text-green-400 text-[50px] leading-tight drop-shadow-lg">{formatCurrency(data?.rental_avg_rent || 0)}</p>
-              <p className="font-n text-white text-lg font-medium leading-tight drop-shadow-md">Avg. Rent</p>
-            </div>
-          </div>
+          <p className="font-me font-medium text-orange-500 text-[80px] leading-tight mb-2">{agentStats?.formattedPrice}</p>
+          <p className="font-n text-neutral-400 text-lg font-medium leading-tight">
+            {agentStats?.priceSubtitle}
+          </p>
         </div>
         <img
           src="/totalenv.jpg"
           alt="Total Environment"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
-        <ButtonBar projectName="Total Environment" />
+        <ButtonBar projectName="Pursuit of a Radical Rhapsody" />
       </section>
 
       {/* Page 11 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
-          <p className="font-n text-neutral-400 text-lg font-medium tracking-wide drop-shadow-md">Configuration DNA</p>
-          <p className="font-me font-medium text-green-900 text-[60px] leading-tight drop-shadow-lg break-words w-full">{data?.top_configuration || '3 BHK'}</p>
-          <p className="font-me text-white text-4xl mt-2 drop-shadow-lg">{data?.config_pct || 0}%</p>
-          <p className="font-n text-neutral-400 text-lg font-medium leading-tight drop-shadow-md mt-4">
-            {(data?.top_configuration || '3 BHK').split(' ')[0]} BHK Specialist!
+          <p className="font-me font-medium text-green-900 text-[60px] break-words w-full">{assetStats.name}</p>
+          <p className="font-n text-neutral-400 text-lg font-medium mt-4">
+            {assetStats.pct ? `${assetStats.pct}% of your deals were in this asset type` : 'You mostly dealt with this asset type'}
           </p>
         </div>
         <img
           src="/edenpark.jpg"
-          alt="SNN"
+          alt="Eden Park"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
-        <ButtonBar projectName="Eden Park" />
+        <ButtonBar projectName="Eden park @ The Prestige City" />
       </section>
 
       {/* Page 12 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
-          <p className="font-n text-neutral-400 text-lg font-medium tracking-wide drop-shadow-md">Your ACN Bestie</p>
-          <p className="font-me font-medium text-orange-500 text-[50px] leading-tight drop-shadow-lg break-words w-full">{data?.bestie_name || 'Partner'}</p>
-          <p className="font-n text-white text-lg font-medium leading-tight drop-shadow-md mt-4">
-            You closed {data?.bestie_count || 0} deals together!
+          <p className="font-me font-medium text-orange-500 text-[50px] break-words w-full">{data?.bestie_name || 'Partner'}</p>
+          <p className="font-n text-neutral-400 text-lg font-medium mt-4">
+            You interacted most with them this year
           </p>
         </div>
         <img
@@ -483,16 +603,16 @@ export default function Home() {
           alt="Total Environment"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
-        <ButtonBar projectName="Total Environment" />
+        <ButtonBar projectName="In That Quiet Earth" />
       </section>
 
       {/* Page 13 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4">
-          <p className="font-me font-medium text-green-900 text-[60px] leading-tight drop-shadow-lg">That's a<br />Wrap!</p>
-          <p className="font-n text-neutral-200 text-lg font-medium tracking-wide drop-shadow-md mt-4">See you in 2026</p>
-          <p className="font-n text-neutral-300 text-sm font-medium tracking-wide drop-shadow-md mt-8 px-8 leading-relaxed">
-            Don't forget to share it on your social media
+          <p className="font-me font-medium text-green-900 text-[60px] leading-tight">That's 2025!</p>
+          <p className="font-n text-neutral-400 text-lg font-medium tracking-wide mt-4">See you next year</p>
+          <p className="font-n text-neutral-400 text-lg font-medium tracking-wide px-8 leading-relaxed">
+            Share your journey on social media
           </p>
         </div>
         <img
@@ -500,7 +620,7 @@ export default function Home() {
           alt="SNN"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
-        <ButtonBar projectName="SNN" />
+        <ButtonBar projectName="SNN Clermont" />
       </section>
     </main>
 

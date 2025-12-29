@@ -38,9 +38,6 @@ export default function ButtonBar({ projectName = 'Project' }: ButtonBarProps) {
         const logo = section?.querySelector('#capture-logo') as HTMLElement;
 
         if (section) {
-            const buttons = section.querySelectorAll('button.glass-btn-standalone');
-            buttons.forEach(b => (b as HTMLElement).style.display = 'none');
-
             if (logo) logo.style.display = 'block';
 
             try {
@@ -50,6 +47,14 @@ export default function ButtonBar({ projectName = 'Project' }: ButtonBarProps) {
                     quality: 0.95,
                     pixelRatio: 2,
                     backgroundColor: '#ffffff',
+                    filter: (node) => {
+                        // Filter out buttons and the loading overlay
+                        if (node instanceof HTMLElement) {
+                            if (node.classList.contains('glass-btn-standalone')) return false;
+                            if (node.id === 'capture-overlay') return false;
+                        }
+                        return true;
+                    }
                 });
 
                 setStatusMsg('Saving...');
@@ -71,7 +76,6 @@ export default function ButtonBar({ projectName = 'Project' }: ButtonBarProps) {
                 setStatusMsg('Error');
                 posthog.capture('download_error', { project: projectName, error: String(err) });
             } finally {
-                buttons.forEach(b => (b as HTMLElement).style.display = 'flex');
                 if (logo) logo.style.display = 'none';
                 setLoading(false);
                 setStatusMsg('');
@@ -109,7 +113,7 @@ export default function ButtonBar({ projectName = 'Project' }: ButtonBarProps) {
             </button>
 
             {loading && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
+                <div id="capture-overlay" className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
                     <div className="bg-white/90 backdrop-blur-xl border border-white/20 px-8 py-6 rounded-2xl flex flex-col items-center gap-3 shadow-2xl animate-in fade-in zoom-in duration-300">
                         {statusMsg === 'Saved!' ? (
                             <div className="w-10 h-10 bg-green-800 rounded-full flex items-center justify-center text-white animate-bounce">
