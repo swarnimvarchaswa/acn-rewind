@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import type { AgentData } from '@/lib/sheets';
 import ButtonBar from './components/ButtonBar';
 import DownloadAllButton from './components/DownloadAllButton';
+import DownloadPageButton from './components/DownloadPageButton';
 import posthog from 'posthog-js';
 
 const formatCurrency = (value: number) => {
@@ -406,13 +407,14 @@ export default function Home() {
           </svg>
         </div>
 
+        <DownloadPageButton pageNumber={1} />
         <ButtonBar projectName="Prestige Shantiniketan" showTutorial={true} />
       </section>
 
       {/* Page 2 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* ACN Logo for screenshot */}
-        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none">
           <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
             <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
             <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
@@ -436,13 +438,14 @@ export default function Home() {
           alt="Velincia"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
+        <DownloadPageButton pageNumber={2} />
         <ButtonBar projectName="Brigade Valencia" />
       </section>
 
       {/* Page 3 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* ACN Logo for screenshot */}
-        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none">
           <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
             <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
             <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
@@ -476,13 +479,14 @@ export default function Home() {
           alt="Lake Terrace"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
+        <DownloadPageButton pageNumber={3} />
         <ButtonBar projectName="Embassy Lake Terraces" />
       </section>
 
       {/* Page 4 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* ACN Logo for screenshot */}
-        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none">
           <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
             <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
             <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
@@ -526,13 +530,14 @@ export default function Home() {
           alt="Exocita"
           className="w-full absolute pl-32 bottom-0 object-cover object-bottom pointer-events-none select-none translate-x-0"
         />
+        <DownloadPageButton pageNumber={4} />
         <ButtonBar projectName="Brigade Exotica" />
       </section>
 
       {/* Page 5 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* ACN Logo for screenshot */}
-        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none">
           <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
             <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
             <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
@@ -553,13 +558,14 @@ export default function Home() {
           alt="Tata"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
+        <DownloadPageButton pageNumber={5} />
         <ButtonBar projectName="Tata Promont" />
       </section>
 
       {/* Page 6 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* ACN Logo for screenshot */}
-        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none">
           <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
             <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
             <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
@@ -598,13 +604,14 @@ export default function Home() {
           alt="Crystal Medows"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none z-10"
         />
+        <DownloadPageButton pageNumber={6} />
         <ButtonBar projectName="Sobha Crystal Meadows" />
       </section>
 
       {/* Page 7 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* ACN Logo for screenshot */}
-        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none">
           <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
             <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
             <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
@@ -625,13 +632,14 @@ export default function Home() {
           alt="Phoenix Kessaku"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
+        <DownloadPageButton pageNumber={7} />
         <ButtonBar projectName="Phoenix Kessaku" />
       </section>
 
       {/* Page 8 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* ACN Logo for screenshot */}
-        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none">
           <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
             <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
             <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
@@ -657,13 +665,14 @@ export default function Home() {
           alt="Royal Pavilion"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
+        <DownloadPageButton pageNumber={8} />
         <ButtonBar projectName="Sobha Royal Pavilion" />
       </section>
 
       {/* Page 9 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* ACN Logo for screenshot */}
-        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none">
           <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
             <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
             <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
@@ -684,13 +693,14 @@ export default function Home() {
           alt="Adarsh Palm Retreat"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
+        <DownloadPageButton pageNumber={9} />
         <ButtonBar projectName="Adarsh Palm Retreat" />
       </section>
 
       {/* Page 10 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* ACN Logo for screenshot */}
-        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none">
           <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
             <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
             <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
@@ -711,13 +721,14 @@ export default function Home() {
           alt="Total Environment"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
+        <DownloadPageButton pageNumber={10} />
         <ButtonBar projectName="Pursuit of a Radical Rhapsody" />
       </section>
 
       {/* Page 11 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* ACN Logo for screenshot */}
-        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none">
           <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
             <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
             <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
@@ -738,13 +749,14 @@ export default function Home() {
           alt="Eden Park"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
+        <DownloadPageButton pageNumber={11} />
         <ButtonBar projectName="Eden park @ The Prestige City" />
       </section>
 
       {/* Page 12 */}
       <section className="w-full h-full snap-start relative overflow-hidden flex flex-col justify-end items-center">
         {/* ACN Logo for screenshot */}
-        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none bg-white/30 backdrop-blur-md border border-white/50 rounded-3xl px-6 py-4 shadow-lg">
+        <div id="capture-logo" className="hidden absolute top-12 left-1/2 -translate-x-1/2 z-20 flex-col items-center pointer-events-none">
           <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-20 h-auto text-green-900 drop-shadow-md">
             <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
             <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
@@ -769,6 +781,7 @@ export default function Home() {
           alt="Total Environment"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
+        <DownloadPageButton pageNumber={12} />
         <ButtonBar projectName="In That Quiet Earth" />
       </section>
 
@@ -805,6 +818,7 @@ export default function Home() {
 
   );
 }
+
 
 
 
