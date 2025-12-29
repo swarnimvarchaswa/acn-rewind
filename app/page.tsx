@@ -646,7 +646,7 @@ export default function Home() {
         <div className="absolute top-60 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center text-center w-full px-4 gap-6">
           <div className="bg-white/20 backdrop-blur-xl rounded-3xl px-6 py-4">
             <p className="font-me font-medium text-green-900 text-[60px] leading-tight">That's 2025!</p>
-            <p className="font-n text-neutral-500 text-lg font-medium tracking-wide">See you in 2026</p>
+            <p className="font-n text-neutral-500 text-lg font-medium tracking-wide pt-4">See you in 2026</p>
             <p className="font-n text-neutral-500 text-lg font-medium tracking-wide px-8 leading-relaxed">
               Share your rewind on social media and don't forget to tag us
             </p>
