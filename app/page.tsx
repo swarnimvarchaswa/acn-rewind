@@ -17,7 +17,7 @@ function LoadingScreen() {
   const [msgIndex, setMsgIndex] = useState(0);
   const messages = [
     "Exploring your year...",
-    "Crunching the numbers...",
+    "Getting the numbers...",
     "Counting your enquries...",
     "Finding your agent...",
     "Analyzing zone stats...",
