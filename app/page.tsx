@@ -438,7 +438,7 @@ export default function Home() {
           alt="Velincia"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
-        <DownloadPageButton pageNumber={2} />
+        <DownloadPageButton pageNumber={2} showTutorial={true} />
         <ButtonBar projectName="Brigade Valencia" />
       </section>
 

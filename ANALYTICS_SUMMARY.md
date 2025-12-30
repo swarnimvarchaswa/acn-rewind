@@ -66,6 +66,28 @@
 - **Trigger**: When download fails
 - **Use Case**: Debug download issues
 
+### 9. **Single Page Download Initiated**
+- **Event**: `download_single_page`
+- **Data Captured**:
+  - Page number (1-12)
+- **Trigger**: When user clicks individual page download button
+- **Use Case**: Track which pages users download individually
+
+### 10. **Single Page Download Success**
+- **Event**: `download_single_page_success`
+- **Data Captured**:
+  - Page number
+- **Trigger**: When single page download succeeds
+- **Use Case**: Track successful individual page downloads
+
+### 11. **Single Page Download Error**
+- **Event**: `download_single_page_error`
+- **Data Captured**:
+  - Page number
+  - Error message
+- **Trigger**: When single page download fails
+- **Use Case**: Debug individual page download issues
+
 ---
 
 ## 📈 Dashboard Metrics You Can Track
@@ -80,8 +102,11 @@
 ### **Interaction Metrics**
 6. **Project Name Reveals**: Count of `project_name_reveal` events
 7. **Most Revealed Projects**: Group by project name
-8. **Download Rate**: (`download_all_initiated` / `page_view`) × 100
-9. **Download Success Rate**: (`download_all_success` / `download_all_initiated`) × 100
+8. **Download All Rate**: (`download_all_initiated` / `page_view`) × 100
+9. **Download All Success Rate**: (`download_all_success` / `download_all_initiated`) × 100
+10. **Single Page Downloads**: Count of `download_single_page` events
+11. **Most Downloaded Pages**: Group by page number
+12. **Single Page Download Success Rate**: (`download_single_page_success` / `download_single_page`) × 100
 
 ### **User Insights**
 10. **Top Agents**: Most viewed agent profiles (by agent_name)
@@ -188,6 +213,9 @@ FROM events
 | `download_all_initiated` | - |
 | `download_all_success` | pages |
 | `download_all_error` | error |
+| `download_single_page` | page |
+| `download_single_page_success` | page |
+| `download_single_page_error` | page, error |
 
 ---
 
