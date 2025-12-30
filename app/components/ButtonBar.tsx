@@ -6,9 +6,10 @@ import posthog from 'posthog-js';
 interface ButtonBarProps {
     projectName?: string;
     showTutorial?: boolean;
+    pageNumber?: number;
 }
 
-export default function ButtonBar({ projectName = 'Project', showTutorial = false }: ButtonBarProps) {
+export default function ButtonBar({ projectName = 'Project', showTutorial = false, pageNumber }: ButtonBarProps) {
     const [showName, setShowName] = useState(showTutorial);
     const [showPulse, setShowPulse] = useState(false);
     const btnClass = `absolute bottom-4 left-4 p-3 flex items-center justify-center rounded-full text-white transition-all duration-300 active:scale-95 bg-gradient-to-b from-black/20 to-black/5 backdrop-blur-sm border border-white/20 shadow-2xl z-50 h-12`;
@@ -31,7 +32,10 @@ export default function ButtonBar({ projectName = 'Project', showTutorial = fals
         setShowName(isRevealing);
         setShowPulse(false); // Stop pulsing when user clicks
         if (isRevealing) {
-            posthog.capture('project_name_reveal', { project: projectName });
+            posthog.capture('project_name_reveal', {
+                project: projectName,
+                page: pageNumber
+            });
         }
     };
 

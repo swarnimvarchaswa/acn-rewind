@@ -408,7 +408,7 @@ export default function Home() {
         </div>
 
         <DownloadPageButton pageNumber={1} />
-        <ButtonBar projectName="Prestige Shantiniketan" showTutorial={true} />
+        <ButtonBar projectName="Prestige Shantiniketan" pageNumber={1} showTutorial={true} />
       </section>
 
       {/* Page 2 */}
@@ -439,7 +439,7 @@ export default function Home() {
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
         <DownloadPageButton pageNumber={2} showTutorial={true} />
-        <ButtonBar projectName="Brigade Valencia" />
+        <ButtonBar projectName="Brigade Valencia" pageNumber={2} />
       </section>
 
       {/* Page 3 */}
@@ -480,7 +480,7 @@ export default function Home() {
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
         <DownloadPageButton pageNumber={3} />
-        <ButtonBar projectName="Embassy Lake Terraces" />
+        <ButtonBar projectName="Embassy Lake Terraces" pageNumber={3} />
       </section>
 
       {/* Page 4 */}
@@ -531,7 +531,7 @@ export default function Home() {
           className="w-full absolute pl-32 bottom-0 object-cover object-bottom pointer-events-none select-none translate-x-0"
         />
         <DownloadPageButton pageNumber={4} />
-        <ButtonBar projectName="Brigade Exotica" />
+        <ButtonBar projectName="Brigade Exotica" pageNumber={4} />
       </section>
 
       {/* Page 5 */}
@@ -559,7 +559,7 @@ export default function Home() {
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
         <DownloadPageButton pageNumber={5} />
-        <ButtonBar projectName="Tata Promont" />
+        <ButtonBar projectName="Tata Promont" pageNumber={5} />
       </section>
 
       {/* Page 6 */}
@@ -605,7 +605,7 @@ export default function Home() {
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none z-10"
         />
         <DownloadPageButton pageNumber={6} />
-        <ButtonBar projectName="Sobha Crystal Meadows" />
+        <ButtonBar projectName="Sobha Crystal Meadows" pageNumber={6} />
       </section>
 
       {/* Page 7 */}
@@ -633,7 +633,7 @@ export default function Home() {
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
         <DownloadPageButton pageNumber={7} />
-        <ButtonBar projectName="Phoenix Kessaku" />
+        <ButtonBar projectName="Phoenix Kessaku" pageNumber={7} />
       </section>
 
       {/* Page 8 */}
@@ -666,7 +666,7 @@ export default function Home() {
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
         <DownloadPageButton pageNumber={8} />
-        <ButtonBar projectName="Sobha Royal Pavilion" />
+        <ButtonBar projectName="Sobha Royal Pavilion" pageNumber={8} />
       </section>
 
       {/* Page 9 */}
@@ -694,7 +694,7 @@ export default function Home() {
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
         <DownloadPageButton pageNumber={9} />
-        <ButtonBar projectName="Adarsh Palm Retreat" />
+        <ButtonBar projectName="Adarsh Palm Retreat" pageNumber={9} />
       </section>
 
       {/* Page 10 */}
@@ -722,7 +722,7 @@ export default function Home() {
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
         <DownloadPageButton pageNumber={10} />
-        <ButtonBar projectName="Pursuit of a Radical Rhapsody" />
+        <ButtonBar projectName="Pursuit of a Radical Rhapsody" pageNumber={10} />
       </section>
 
       {/* Page 11 */}
@@ -750,7 +750,7 @@ export default function Home() {
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
         <DownloadPageButton pageNumber={11} />
-        <ButtonBar projectName="Eden park @ The Prestige City" />
+        <ButtonBar projectName="Eden park @ The Prestige City" pageNumber={11} />
       </section>
 
       {/* Page 12 */}
@@ -782,7 +782,7 @@ export default function Home() {
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
         <DownloadPageButton pageNumber={12} />
-        <ButtonBar projectName="In That Quiet Earth" />
+        <ButtonBar projectName="In That Quiet Earth" pageNumber={12} />
       </section>
 
       {/* Page 13 */}
@@ -812,7 +812,7 @@ export default function Home() {
           alt="SNN"
           className="w-full absolute bottom-0 object-cover object-bottom pointer-events-none select-none"
         />
-        <ButtonBar projectName="SNN Clermont" />
+        <ButtonBar projectName="SNN Clermont" pageNumber={13} />
       </section>
     </main>
 

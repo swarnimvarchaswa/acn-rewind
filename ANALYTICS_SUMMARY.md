@@ -43,8 +43,9 @@
 - **Event**: `project_name_reveal`
 - **Data Captured**:
   - Project name
+  - Page number (1-13)
 - **Trigger**: When user clicks the eye icon button to reveal project name
-- **Use Case**: Track curiosity and interaction with property names
+- **Use Case**: Track which projects users are curious about and on which pages
 
 ### 6. **Download Initiated**
 - **Event**: `download_all_initiated`
@@ -209,7 +210,7 @@ FROM events
 | `page_view` | url, mobile, agent_name |
 | `scroll_depth` | percentage, mobile, agent_name |
 | `rewind_completed` | percentage, mobile, agent_name, url |
-| `project_name_reveal` | project |
+| `project_name_reveal` | project, page |
 | `download_all_initiated` | - |
 | `download_all_success` | pages |
 | `download_all_error` | error |
