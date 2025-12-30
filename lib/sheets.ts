@@ -353,13 +353,25 @@ export async function getAgentData(mobile: string): Promise<AgentData> {
       result.config_pct = configData.topConfigPct;
       result.all_configurations = configData.allConfigurations;
       
-      result.resale_avg_price = parseInt(agentRow[11]) || 0;
-      result.resale_min_price = parseInt(agentRow[12]) || 0;
-      result.resale_max_price = parseInt(agentRow[13]) || 0;
-      result.rental_avg_rent = parseInt(agentRow[14]) || 0;
-      result.rental_min_rent = parseInt(agentRow[15]) || 0;
-      result.rental_max_rent = parseInt(agentRow[16]) || 0;
+      // Pricing data - Column M onwards (index 12+)
+      // Column M (12): Resale Avg Price
+      // Column N (13): Resale Min Price  
+      // Column O (14): Resale Max Price
+      // Column P (15): Rental Avg Rent
+      // Column Q (16): Rental Min Rent
+      // Column R (17): Rental Max Rent
+      result.resale_avg_price = parseInt(agentRow[12]) || 0;
+      result.resale_min_price = parseInt(agentRow[13]) || 0;
+      result.resale_max_price = parseInt(agentRow[14]) || 0;
+      result.rental_avg_rent = parseInt(agentRow[15]) || 0;
+      result.rental_min_rent = parseInt(agentRow[16]) || 0;
+      result.rental_max_rent = parseInt(agentRow[17]) || 0;
       
+      // Bestie data - Column S onwards (index 18+)
+      // Column S (18): Bestie CP ID
+      // Column T (19): Bestie Name
+      // Column U (20): Bestie Mobile
+      // Column V (21): Top Interaction Count
       result.bestie_cp_id = agentRow[18] || '';
       result.bestie_name = agentRow[19] || '-';
       result.bestie_mobile = agentRow[20] || '';

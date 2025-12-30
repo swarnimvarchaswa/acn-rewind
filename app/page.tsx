@@ -401,11 +401,17 @@ export default function Home() {
           </div>
         </div>
         {/* Scroll Indicator */}
-        <div className="z-10 animate-bounce pointer-events-none mb-24 text-white">
+        <button
+          onClick={() => {
+            const sections = document.querySelectorAll('main > section');
+            sections[1]?.scrollIntoView({ behavior: 'smooth' });
+          }}
+          className="z-10 animate-bounce mb-24 text-white cursor-pointer hover:scale-110 transition-transform duration-300 active:scale-95"
+        >
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
           </svg>
-        </div>
+        </button>
 
         <DownloadPageButton pageNumber={1} />
         <ButtonBar projectName="Prestige Shantiniketan" pageNumber={1} showTutorial={true} />
