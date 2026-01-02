@@ -32,7 +32,7 @@ export default function RootLayout({
         className={`${lora.variable} ${montserrat.variable} antialiased bg-black flex justify-center items-center h-dvh w-screen overflow-hidden`}
       >
         <PHProvider>
-          <div className="w-full h-full sm:max-w-sm sm:h-[96vh] sm:rounded-3xl shadow-2xl relative bg-black overflow-hidden">
+          <div className="w-full h-full sm:max-w-md sm:h-[96vh] sm:rounded-3xl shadow-2xl relative bg-black overflow-hidden">
             {children}
           </div>
         </PHProvider>
