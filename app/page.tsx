@@ -46,38 +46,120 @@ function LoadingScreen() {
 }
 
 // --- LOGIN SCREEN COMPONENT ---
-function LoginScreen({ onLogin, error }: { onLogin: (mobile: string) => void, error: string }) {
+function LoginScreen({ onLogin, error, loading }: { onLogin: (mobile: string) => void, error: string, loading: boolean }) {
   const [mobile, setMobile] = useState('');
+  const [focused, setFocused] = useState(false);
+
+  useEffect(() => {
+    // Track login screen view
+    posthog.capture('login_screen_viewed', {
+      timestamp: new Date().toISOString(),
+      url: window.location.href
+    });
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, ''); // Only digits
+    setMobile(value);
+
+    // Track when user starts typing
+    if (value.length === 1) {
+      posthog.capture('login_input_started');
+    }
+  };
+
+  const handleSubmit = () => {
+    if (mobile.length >= 10) {
+      // Track login attempt
+      posthog.capture('login_attempted', {
+        mobile_length: mobile.length,
+        timestamp: new Date().toISOString()
+      });
+      onLogin(mobile);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && mobile.length >= 10) {
+      handleSubmit();
+    }
+  };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-white px-6">
-      <div className="w-full max-w-sm flex flex-col items-center gap-8">
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold text-green-900 tracking-tight">ACN Rewind 2025</h1>
-          <p className="text-gray-500 font-medium">Enter your mobile number to start</p>
+    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-50 px-6">
+      <div className="w-full max-w-md flex flex-col items-center gap-10">
+        {/* Logo/Header */}
+        <div className="text-center space-y-3">
+          <div className="inline-block mb-4">
+            <svg viewBox="0 0 90 57" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-24 h-auto text-green-900">
+              <path d="M60.516 23.292L53.212 27.692C51.8333 25.932 50.044 24.9053 47.844 24.612V16.12C50.3667 16.296 52.7427 17.0147 54.972 18.276C57.2013 19.5373 59.0493 21.2093 60.516 23.292ZM60.516 43.268C59.0493 45.3507 57.2013 47.0227 54.972 48.284C52.7427 49.5453 50.3667 50.264 47.844 50.44V41.948C50.044 41.6547 51.8333 40.628 53.212 38.868L60.516 43.268ZM45.644 50.44C41.244 50.1467 37.46 48.3133 34.292 44.94C31.124 41.5667 29.54 37.68 29.54 33.28C29.54 28.88 31.124 24.9933 34.292 21.62C37.46 18.2467 41.244 16.4133 45.644 16.12V24.612C43.5613 24.9053 41.772 25.9027 40.276 27.604C38.78 29.3053 38.032 31.1973 38.032 33.28C38.032 35.3627 38.78 37.2547 40.276 38.956C41.772 40.6573 43.5613 41.6547 45.644 41.948V50.44ZM87.5062 35.304L79.0142 26.284V16.56H87.5062V35.304ZM87.5062 50H84.8662L64.2742 28.132V16.56H66.8702L87.5062 38.516V50ZM72.7662 50H64.2742V31.344L72.7662 40.364V50Z" fill="currentColor" />
+              <path d="M29.7844 50H20.9404L19.9724 46.832H13.2404L15.9244 38.34H17.3324L11.8764 20.828L13.4604 16.56H17.6844L29.7844 50ZM14.3404 36.228L10.0724 50H1.22836L10.5124 24.304L14.3404 36.228Z" fill="currentColor" />
+            </svg>
+          </div>
+          <h1 className="text-5xl font-bold text-green-900 tracking-tight">ACN Rewind 2025</h1>
+          <p className="text-neutral-600 font-medium text-lg">Enter your ACN registered number</p>
         </div>
 
-        <div className="w-full flex gap-5 flex-col">
-          <input
-            type="tel"
-            placeholder="1234567890"
-            value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
-            className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-xl font-semibold text-center text-green-900 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-green-800 focus:border-transparent transition-all"
-            maxLength={10}
-          />
+        {/* Input Form */}
+        <div className="w-full flex flex-col gap-6">
+          <div className="relative">
+            <input
+              type="tel"
+              placeholder="Enter 10-digit mobile number"
+              value={mobile}
+              onChange={handleInputChange}
+              onKeyPress={handleKeyPress}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setFocused(false)}
+              disabled={loading}
+              className={`w-full px-6 py-5 bg-white border-2 rounded-2xl text-lg font-semibold text-center text-green-900 placeholder-gray-400 transition-all duration-300 ${focused
+                ? 'border-green-900 ring-4 ring-green-900/10 shadow-xl'
+                : 'border-gray-200 shadow-md hover:border-gray-300'
+                } ${loading ? 'opacity-50 cursor-not-allowed' : ''} focus:outline-none`}
+              maxLength={10}
+              autoFocus
+            />
+            {mobile.length >= 10 && (
+              <div className="absolute right-4 top-1/2 -translate-y-1/2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center bg-green-900 text-white">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              </div>
+            )}
+          </div>
 
-          {error && <p className="text-red-500 text-sm font-medium text-center mb-6">{error}</p>}
+          {/* Error Message */}
+          {error && (
+            <div className="bg-red-50 border-2 border-red-200 rounded-xl px-4 py-3 animate-in fade-in slide-in-from-top-2 duration-300">
+              <p className="text-red-600 text-sm font-semibold text-center">{error}</p>
+            </div>
+          )}
 
+          {/* Submit Button */}
           <button
-            onClick={() => {
-              if (mobile.length >= 10) onLogin(mobile);
-            }}
-            disabled={mobile.length < 10}
-            className="w-full py-4 bg-green-900 text-white rounded-2xl font-bold text-lg hover:bg-green-800 active:scale-95 transition-all shadow-lg disabled:opacity-80 disabled:cursor-not-allowed"
+            onClick={handleSubmit}
+            disabled={mobile.length < 10 || loading}
+            className={`w-full py-5 rounded-2xl font-bold text-lg transition-all duration-300 shadow-xl ${mobile.length >= 10 && !loading
+              ? 'bg-green-900 text-white hover:bg-green-800 hover:shadow-2xl hover:scale-[1.02] active:scale-95'
+              : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              }`}
           >
-            Reveal My Rewind
+            {loading ? (
+              <div className="flex items-center justify-center gap-3">
+                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                <span>Loading your rewind...</span>
+              </div>
+            ) : (
+              'Reveal My Rewind'
+            )}
           </button>
+
+          {/* Helper Text */}
+          <p className="text-center text-sm text-gray-400 font-medium">
+            Use the mobile number registered with ACN
+          </p>
         </div>
       </div>
     </div>
@@ -163,25 +245,59 @@ export default function Home() {
   const fetchData = (mobile: string) => {
     setLoading(true);
     setError('');
+
+    const startTime = Date.now();
+
     fetch(`/api/agent?mobile=${mobile}`)
       .then((res) => res.json())
       .then((res) => {
+        const loadTime = Date.now() - startTime;
+
         if (res.found) {
           setData(res);
 
           // IDENTIFY USER
-          posthog.identify(mobile);
+          posthog.identify(mobile, {
+            agent_name: res.agent_name,
+            cp_id: res.cp_id,
+            days_active: res.days_active,
+            total_enquiries: res.total_enquiries
+          });
+
+          // Track successful login
+          posthog.capture('login_success', {
+            mobile: mobile,
+            agent_name: res.agent_name,
+            load_time_ms: loadTime,
+            timestamp: new Date().toISOString(),
+            url: window.location.href
+          });
 
           // Update URL without reloading the page
           const newUrl = `${window.location.pathname}?mobile=${mobile}`;
           window.history.pushState({ path: newUrl }, '', newUrl);
         } else {
-          setError('Agent not found. Try again.');
+          // Track login failure
+          posthog.capture('login_failed', {
+            mobile: mobile,
+            reason: 'agent_not_found',
+            timestamp: new Date().toISOString()
+          });
+
+          setError('Mobile number not found. Please check your ACN registered number.');
         }
       })
       .catch((err) => {
         console.error(err);
-        setError('Something went wrong. check connection.');
+
+        // Track login error
+        posthog.capture('login_error', {
+          mobile: mobile,
+          error: err.message || 'Unknown error',
+          timestamp: new Date().toISOString()
+        });
+
+        setError('Unable to connect. Please check your internet connection and try again.');
       })
       .finally(() => {
         setLoading(false);
@@ -354,7 +470,7 @@ export default function Home() {
 
   // --- RENDER LOGIC ---
   if (loading) return <LoadingScreen />;
-  if (!data) return <LoginScreen onLogin={fetchData} error={error} />;
+  if (!data) return <LoginScreen onLogin={fetchData} error={error} loading={loading} />;
 
   // --- MAIN WRAP ---
   return (
